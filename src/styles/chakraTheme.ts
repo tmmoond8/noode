@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+import { theme as baseTheme } from '@chakra-ui/theme';
 const colors = {
   brand: {
     // 900: '#1a365d',
@@ -13,3 +14,10 @@ export const theme = extendTheme({
     body: 'var(--font-inter)',
   },
 });
+
+type BaseTheme = typeof baseTheme;
+export interface Theme extends BaseTheme {}
+
+export const useTheme = (): typeof baseTheme => {
+  return theme as typeof baseTheme;
+};
