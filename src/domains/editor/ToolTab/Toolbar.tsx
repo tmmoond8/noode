@@ -1,46 +1,28 @@
 import React from 'react';
 import { Text, Stack } from '@chakra-ui/react';
-import { FaShapes } from 'react-icons/fa';
-import { BiCloudUpload, BiPencil } from 'react-icons/bi';
-import { PiTextTBold } from 'react-icons/pi';
 import { useTheme } from '@/styles/chakraTheme';
 import { css } from '@emotion/react';
+import { MENUS, MenuKey } from './constants';
 
 interface Props {
-  title?: string;
+  tab: Nullable<MenuKey>;
+  setTab: SetState<Nullable<MenuKey>>;
 }
 
-export function Toolbar({ title }: Props) {
-  const menus = [
-    {
-      name: '요소',
-      Icon: FaShapes,
-    },
-    {
-      name: '텍스트',
-      Icon: PiTextTBold,
-    },
-    {
-      name: '업로드',
-      Icon: BiCloudUpload,
-    },
-    {
-      name: '그리기',
-      Icon: BiPencil,
-    },
-  ];
+export function Toolbar({ tab, setTab }: Props) {
   const theme = useTheme();
 
   return (
     <Stack bg="gray.800" height="100%" width="72px" padding="12px 0" gap="0">
-      {menus.map(({ name, Icon }) => (
+      {MENUS.map(({ name, key, Icon }) => (
         <Stack
-          key={name}
+          key={key}
           justifyContent="center"
           alignItems="center"
           height="72px"
           gap="4px"
           cursor="pointer"
+          onClick={() => setTab(key)}
           css={css`
             & {
               svg,
@@ -55,6 +37,14 @@ export function Toolbar({ title }: Props) {
                 color: white;
               }
             }
+
+            ${tab === key &&
+            css`
+              svg,
+              p {
+                color: white;
+              }
+            `}
           `}
         >
           <Icon size={20} />
