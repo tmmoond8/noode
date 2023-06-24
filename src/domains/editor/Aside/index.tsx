@@ -14,7 +14,7 @@ export function ToolTab() {
   const [tab, setTab] = React.useState<Nullable<MenuKey>>(null);
 
   return (
-    <Flex height="100%">
+    <Flex height="100%" zIndex={10}>
       <SideBar tab={tab} setTab={setTab} />
       {tab && (
         <Box position="relative" width="343px" height="100%" backgroundColor="gray.700">
