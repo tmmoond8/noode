@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
 import { BiChevronLeft } from 'react-icons/bi';
-import { Toolbar } from './Toolbar';
+import { SideBar } from './SideBar';
 import { MenuKey } from './constants';
-import { ElementTab } from './ElementTab';
-import { TextTab } from './TextTab';
-import { UploadTab } from './UploadTab';
-import { DrawTab } from './DrawTab';
+import { ElementPanel } from './ElementPanel';
+import { TextPanel } from './TextPanel';
+import { UploadPanel } from './UploadPanel';
+import { DrawPanel } from './DrawPanel';
 import { useTheme } from '@/styles/chakraTheme';
 import { css } from '@emotion/react';
 
@@ -15,13 +15,13 @@ export function ToolTab() {
 
   return (
     <Flex height="100%">
-      <Toolbar tab={tab} setTab={setTab} />
+      <SideBar tab={tab} setTab={setTab} />
       {tab && (
         <Box position="relative" width="343px" height="100%" backgroundColor="gray.700">
-          {tab === 'element' && <ElementTab />}
-          {tab === 'text' && <TextTab />}
-          {tab === 'upload' && <UploadTab />}
-          {tab === 'draw' && <DrawTab />}
+          {tab === 'element' && <ElementPanel />}
+          {tab === 'text' && <TextPanel />}
+          {tab === 'upload' && <UploadPanel />}
+          {tab === 'draw' && <DrawPanel />}
           <Box
             position="absolute"
             right="-12px"

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { Stack, Flex, Container } from '@chakra-ui/react';
 import { Header } from '@/domains/editor/Header';
-import { ToolTab } from '@/domains/editor/ToolTab';
+import { ToolTab } from '@/domains/editor/Aside';
 
 export default function Home() {
   return (

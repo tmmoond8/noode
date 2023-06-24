@@ -9,7 +9,7 @@ interface Props {
   setTab: SetState<Nullable<MenuKey>>;
 }
 
-export function Toolbar({ tab, setTab }: Props) {
+export function SideBar({ tab, setTab }: Props) {
   const theme = useTheme();
 
   return (
