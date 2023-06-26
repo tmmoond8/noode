@@ -2,7 +2,7 @@ import { FaShapes } from 'react-icons/fa';
 import { BiCloudUpload, BiPencil } from 'react-icons/bi';
 import { PiTextTBold } from 'react-icons/pi';
 
-export const MENUS = [
+export const SIDE_MENUS = [
   {
     key: 'element',
     name: '요소',
@@ -25,4 +25,4 @@ export const MENUS = [
   },
 ] as const;
 
-export type MenuKey = (typeof MENUS)[number]['key'];
+export type SideMenuKey = (typeof SIDE_MENUS)[number]['key'];

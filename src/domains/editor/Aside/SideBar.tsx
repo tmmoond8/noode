@@ -2,19 +2,22 @@ import React from 'react';
 import { Text, Stack } from '@chakra-ui/react';
 import { useTheme } from '@/styles/chakraTheme';
 import { css } from '@emotion/react';
-import { MENUS, MenuKey } from './constants';
+import { SIDE_MENUS } from '@/constants';
+import { useEditorUiStore, shallow } from '@/stores';
 
-interface Props {
-  tab: Nullable<MenuKey>;
-  setTab: SetState<Nullable<MenuKey>>;
-}
-
-export function SideBar({ tab, setTab }: Props) {
+export function SideBar() {
   const theme = useTheme();
+  const { tab, setTab } = useEditorUiStore(
+    (state) => ({
+      tab: state.tab,
+      setTab: state.setTab,
+    }),
+    shallow,
+  );
 
   return (
     <Stack bg="gray.800" height="100%" width="72px" padding="12px 0" gap="0">
-      {MENUS.map(({ name, key, Icon }) => (
+      {SIDE_MENUS.map(({ name, key, Icon }) => (
         <Stack
           key={key}
           justifyContent="center"

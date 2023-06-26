@@ -2,20 +2,27 @@ import React from 'react';
 import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
 import { BiChevronLeft } from 'react-icons/bi';
 import { SideBar } from './SideBar';
-import { MenuKey } from './constants';
+import { SideMenuKey } from '@/constants';
 import { ElementPanel } from './ElementPanel';
 import { TextPanel } from './TextPanel';
 import { UploadPanel } from './UploadPanel';
 import { DrawPanel } from './DrawPanel';
 import { useTheme } from '@/styles/chakraTheme';
 import { css } from '@emotion/react';
+import { shallow, useEditorUiStore } from '@/stores';
 
-export function ToolTab() {
-  const [tab, setTab] = React.useState<Nullable<MenuKey>>(null);
+export function SideTab() {
+  const { tab, setTab } = useEditorUiStore(
+    (state) => ({
+      tab: state.tab,
+      setTab: state.setTab,
+    }),
+    shallow,
+  );
 
   return (
     <Flex height="100%" zIndex={10}>
-      <SideBar tab={tab} setTab={setTab} />
+      <SideBar />
       {tab && (
         <Box position="relative" width="343px" height="100%" backgroundColor="gray.700">
           {tab === 'element' && <ElementPanel />}

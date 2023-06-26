@@ -4,19 +4,32 @@ import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
 import { Toolbar } from './Toolbar';
 import { BottomBar } from './BottomBar';
 import { fabric } from 'fabric';
-import { useFabricStore } from '@/stores';
+import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { useDelay } from '@/hooks';
 
 export function NoodeEditor() {
+  const { tab } = useEditorUiStore(
+    (state) => ({
+      tab: state.tab,
+    }),
+    shallow,
+  );
+  const { canvas, setCanvas } = useFabricStore(
+    (state) => ({ canvas: state.canvas, setCanvas: state.setCanvas }),
+    shallow,
+  );
+
   const containerRef = React.useRef<HTMLDivElement>(null);
   const delay500 = useDelay(500);
 
   React.useLayoutEffect(() => {
     if (containerRef.current && delay500) {
-      var canvas = new fabric.Canvas('canvas');
-      canvas.setWidth(containerRef.current.offsetWidth);
-      canvas.setHeight(containerRef.current.offsetHeight);
-      canvas.add(
+      const _canvas = new fabric.Canvas('canvas');
+      setCanvas(_canvas);
+      console.log('ssss', containerRef.current.offsetWidth);
+      _canvas.setWidth(containerRef.current.offsetWidth);
+      _canvas.setHeight(containerRef.current.offsetHeight);
+      _canvas.add(
         new fabric.Text('very tips, much thanks 🐕\nDLgEWDm7k12iPxMjpxteucPNH5qpFQdTqS', {
           left: 30,
           top: containerRef.current.offsetHeight - 50,
@@ -25,10 +38,10 @@ export function NoodeEditor() {
           fontSize: 15,
         }),
       );
-      var center = canvas.getCenter();
-      canvas.setBackgroundImage(
+      var center = _canvas.getCenter();
+      _canvas.setBackgroundImage(
         'https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1686670691/noticon/x7pwcoyu1tvbxvc5ps9n.gif',
-        canvas.renderAll.bind(canvas),
+        _canvas.renderAll.bind(_canvas),
         {
           scaleX: 1.2,
           scaleY: 1.2,
@@ -43,15 +56,24 @@ export function NoodeEditor() {
       fabric.Object.prototype.transparentCorners = true;
       fabric.Object.prototype.cornerColor = 'blue';
       fabric.Object.prototype.cornerStyle = 'circle';
-      // dispatch({ type: 'INIT', canvas: canvas });
       return () => {
-        canvas.dispose();
+        _canvas.dispose();
       };
     }
   }, [delay500]);
 
+  React.useEffect(() => {
+    if (!canvas || !containerRef.current) {
+      return;
+    }
+    console.log('canvas', canvas);
+    canvas.setWidth(containerRef.current.offsetWidth);
+    canvas.setHeight(containerRef.current.offsetHeight);
+    canvas.renderAll();
+  }, [tab, canvas]);
+
   return (
-    <Stack width="100%" height="100%" flex="1">
+    <Stack width="100%" height="100%" flex="1" overflow="hidden">
       <Toolbar />
       <Box flex="1" ref={containerRef}>
         <canvas id="canvas"></canvas>
