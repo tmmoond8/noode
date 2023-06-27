@@ -2,6 +2,7 @@ import React from 'react';
 import { fabric } from 'fabric';
 import { Box, Text, VStack, Flex, Stack, Wrap, Button } from '@chakra-ui/react';
 import { useFabricStore } from '@/stores';
+import { uuid } from '@/utils/string';
 
 interface Props {
   title?: string;
@@ -21,6 +22,8 @@ export function ElementPanel({ title }: Props) {
                 height: 100,
                 top,
                 left,
+                name: uuid('Rect-'),
+                type: 'Rect',
               }),
             );
           }}
@@ -35,6 +38,8 @@ export function ElementPanel({ title }: Props) {
                 radius: 20,
                 top,
                 left,
+                name: uuid('Circle-'),
+                type: 'Circle',
               }),
             );
           }}
@@ -50,6 +55,8 @@ export function ElementPanel({ title }: Props) {
                 height: 100,
                 top,
                 left,
+                name: uuid('Triangle-'),
+                type: 'Triangle',
               }),
             );
           }}

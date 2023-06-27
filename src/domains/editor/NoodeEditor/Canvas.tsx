@@ -34,6 +34,7 @@ export function Canvas() {
         width: offsetWidth,
         height: offsetHeight,
         backgroundColor: 'gray',
+        renderOnAddRemove: true,
       });
       setCanvas(_canvas);
 
