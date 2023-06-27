@@ -4,6 +4,7 @@ import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
 import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { useDelay } from '@/hooks';
 import { WhiteBoard } from './WhiteBoard';
+import { resizeCanvas } from '@/utils/canvas';
 
 export function Canvas() {
   const { tab, width, height, setEditorSize } = useEditorUiStore(
@@ -19,28 +20,35 @@ export function Canvas() {
     (state) => ({ canvas: state.canvas, setCanvas: state.setCanvas }),
     shallow,
   );
+  const backgroundRef = React.useRef<Nullable<fabric.Rect>>(null);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const delay500 = useDelay(500);
 
-  React.useEffect(() => {
-    console.log('aaa', delay500);
-    if (containerRef.current && delay500) {
-      console.log('bbbb');
-      const _canvas = new fabric.Canvas('canvas');
-      setCanvas(_canvas);
-      const { offsetHeight, offsetWidth } = containerRef.current;
-      _canvas.setWidth(offsetWidth);
-      _canvas.setHeight(offsetHeight);
+  useResizeCanvas({ canvas, containerRef });
 
-      const background = new fabric.Rect({
+  React.useEffect(() => {
+    if (containerRef.current && delay500) {
+      const { offsetHeight, offsetWidth } = containerRef.current;
+      const _canvas = new fabric.Canvas('canvas', {
         width: offsetWidth,
         height: offsetHeight,
-        fill: 'grey',
-        selectable: false,
+        backgroundColor: 'gray',
       });
+      setCanvas(_canvas);
 
-      _canvas.add(background);
+      // _canvas.setWidth(offsetWidth);
+      // _canvas.setHeight(offsetHeight);
+      // _canvas.backgroundColor
+
+      // backgroundRef.current = new fabric.Rect({
+      //   width: offsetWidth,
+      //   height: offsetHeight,
+      //   fill: 'grey',
+      //   selectable: false,
+      // });
+
+      // _canvas.add(backgroundRef.current);
 
       // _canvas.add(
       //   new fabric.Text('very tips, much thanks 🐕\nDLgEWDm7k12iPxMjpxteucPNH5qpFQdTqS', {
@@ -70,18 +78,36 @@ export function Canvas() {
       fabric.Object.prototype.cornerColor = 'blue';
       fabric.Object.prototype.cornerStyle = 'circle';
       return () => {
-        // _canvas.dispose();
+        _canvas.dispose();
       };
     }
   }, [delay500]);
 
+  return (
+    <Box className="editor-container" flex="1" ref={containerRef}>
+      <canvas id="canvas" />
+      <WhiteBoard />
+    </Box>
+  );
+}
+
+const useResizeCanvas = ({
+  canvas,
+  containerRef,
+}: {
+  canvas: Nullable<fabric.Canvas>;
+  containerRef: React.RefObject<HTMLDivElement>;
+}) => {
+  const { tab } = useEditorUiStore(
+    (state) => ({
+      tab: state.tab,
+    }),
+    shallow,
+  );
   React.useEffect(() => {
     const handleResize = () => {
-      if (containerRef.current) {
-        setEditorSize({
-          width: containerRef.current.offsetWidth,
-          height: containerRef.current.offsetHeight,
-        });
+      if (containerRef.current && canvas) {
+        resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
       }
       console.log(',kkkk');
     };
@@ -92,21 +118,12 @@ export function Canvas() {
         globalThis.removeEventListener('resize', handleResize);
       };
     }
-  }, []);
+  }, [canvas]);
 
   React.useEffect(() => {
     if (!canvas || !containerRef.current) {
       return;
     }
-    canvas.setWidth(containerRef.current.offsetWidth);
-    canvas.setHeight(containerRef.current.offsetHeight);
-    canvas.renderAll();
+    resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
   }, [tab, canvas]);
-
-  return (
-    <Box flex="1" ref={containerRef}>
-      <canvas id="canvas" />
-      <WhiteBoard />
-    </Box>
-  );
-}
+};

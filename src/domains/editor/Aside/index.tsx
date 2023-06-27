@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
 import { BiChevronLeft } from 'react-icons/bi';
 import { SideBar } from './SideBar';
-import { SideMenuKey } from '@/constants';
 import { ElementPanel } from './ElementPanel';
 import { TextPanel } from './TextPanel';
 import { UploadPanel } from './UploadPanel';

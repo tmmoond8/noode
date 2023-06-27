@@ -3,10 +3,7 @@ import { fabric } from 'fabric';
 import { shallow, useFabricStore } from '@/stores';
 
 export function WhiteBoard() {
-  const { canvas, setCanvas } = useFabricStore(
-    (state) => ({ canvas: state.canvas, setCanvas: state.setCanvas }),
-    shallow,
-  );
+  const { canvas } = useFabricStore((state) => ({ canvas: state.canvas }), shallow);
 
   React.useEffect(() => {
     if (!canvas) {
