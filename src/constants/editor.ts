@@ -26,3 +26,7 @@ export const SIDE_MENUS = [
 ] as const;
 
 export type SideMenuKey = (typeof SIDE_MENUS)[number]['key'];
+
+export enum MAJOR_ELEMENTS {
+  WhiteBoard = 'WhiteBoard',
+}

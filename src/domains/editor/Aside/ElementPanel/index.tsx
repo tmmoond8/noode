@@ -20,6 +20,7 @@ export function ElementPanel({ title }: Props) {
               new fabric.Rect({
                 width: 100,
                 height: 100,
+                fill: 'red',
                 top,
                 left,
                 name: uuid('Rect-'),
@@ -38,6 +39,7 @@ export function ElementPanel({ title }: Props) {
                 radius: 20,
                 top,
                 left,
+                fill: 'blue',
                 name: uuid('Circle-'),
                 type: 'Circle',
               }),
@@ -55,6 +57,7 @@ export function ElementPanel({ title }: Props) {
                 height: 100,
                 top,
                 left,
+                fill: 'green',
                 name: uuid('Triangle-'),
                 type: 'Triangle',
               }),

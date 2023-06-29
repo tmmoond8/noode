@@ -1,6 +1,7 @@
 import React from 'react';
 import { fabric } from 'fabric';
 import { shallow, useFabricStore } from '@/stores';
+import { MAJOR_ELEMENTS } from '@/constants';
 
 export function WhiteBoard() {
   const { canvas } = useFabricStore((state) => ({ canvas: state.canvas }), shallow);
@@ -20,6 +21,7 @@ export function WhiteBoard() {
       height: 400,
       fill: '#ffffff',
       selectable: false,
+      name: MAJOR_ELEMENTS.WhiteBoard,
     });
     canvas.add(whiteBoard);
   }, [canvas]);

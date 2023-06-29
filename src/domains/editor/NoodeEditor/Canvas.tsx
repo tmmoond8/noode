@@ -110,7 +110,6 @@ const useResizeCanvas = ({
       if (containerRef.current && canvas) {
         resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
       }
-      console.log(',kkkk');
     };
     handleResize();
     if (globalThis) {
