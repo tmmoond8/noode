@@ -9,7 +9,6 @@ export function resizeCanvas(canvas: fabric.Canvas, newWidth: number, newHeight:
     return;
   }
 
-  debugger;
   // 캔버스의 크기를 변경합니다
   try {
     canvas.setDimensions({ width: newWidth, height: newHeight });
@@ -29,8 +28,8 @@ export function resizeCanvas(canvas: fabric.Canvas, newWidth: number, newHeight:
   }
 
   // 캔버스에 있는 모든 객체를 새로운 크기에 맞게 조정합니다
-  const deltaX = (newWidth - oldWidth) / 2;
-  const deltaY = (newHeight - oldHeight) / 2;
+  const deltaX = (newWidth - oldWidth) / 4;
+  const deltaY = (newHeight - oldHeight) / 4;
   const scaleX = newWidth / oldWidth;
   const scaleY = newHeight / oldHeight;
 
