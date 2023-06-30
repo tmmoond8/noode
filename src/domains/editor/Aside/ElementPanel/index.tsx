@@ -35,6 +35,7 @@ export function ElementPanel({ title }: Props) {
               name: uuid,
               type: 'Rect',
             });
+            // canvas.add(rect);
             setObjectMap(uuid, rect);
           }}
         >

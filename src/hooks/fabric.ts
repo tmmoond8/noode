@@ -1,36 +1,17 @@
 import React from 'react';
+import { useDelay } from './useDelay';
 import { fabric } from 'fabric';
-import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
-import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
-import { useDelay } from '@/hooks';
-import { WhiteBoard } from './WhiteBoard';
 import { resizeCanvas } from '@/utils/canvas';
-import { Text, FabricObject } from '@/domains/editor/NoodeEditor/Element';
+import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 
-export function Canvas() {
-  const { tab, width, height, setEditorSize } = useEditorUiStore(
-    (state) => ({
-      tab: state.tab,
-      width: state.width,
-      height: state.height,
-      setEditorSize: state.setEditorSize,
-    }),
-    shallow,
-  );
-  const { canvas, textMap, objectMap, setCanvas } = useFabricStore(
-    (state) => ({
-      canvas: state.canvas,
-      setCanvas: state.setCanvas,
-      textMap: state.textMap,
-      objectMap: state.objectMap,
-    }),
-    shallow,
-  );
-
-  const containerRef = React.useRef<HTMLDivElement>(null);
+export const useInitFabric = (containerRef: React.RefObject<HTMLDivElement>) => {
   const delay500 = useDelay(500);
-
-  useResizeCanvas({ canvas, containerRef });
+  const { setCanvas } = useFabricStore(
+    (state) => ({
+      setCanvas: state.setCanvas,
+    }),
+    shallow,
+  );
 
   React.useEffect(() => {
     if (containerRef.current && delay500) {
@@ -46,27 +27,17 @@ export function Canvas() {
       fabric.Object.prototype.transparentCorners = true;
       fabric.Object.prototype.cornerColor = 'blue';
       fabric.Object.prototype.cornerStyle = 'circle';
+
       return () => {
-        _canvas.dispose();
+        if (process.env.NODE_ENV !== 'development') {
+          _canvas.dispose();
+        }
       };
     }
   }, [delay500]);
+};
 
-  return (
-    <Box className="editor-container" flex="1" ref={containerRef}>
-      <canvas id="canvas" />
-      <WhiteBoard />
-      {/* {Object.entries(textMap).map(
-        ([uuid, options]) => canvas && <Text uuid={uuid} options={options} canvas={canvas} key={uuid} />,
-      )} */}
-      {Object.entries(objectMap).map(
-        ([uuid, options]) => canvas && <FabricObject uuid={uuid} options={options} canvas={canvas} key={uuid} />,
-      )}
-    </Box>
-  );
-}
-
-const useResizeCanvas = ({
+export const useResizeCanvas = ({
   canvas,
   containerRef,
 }: {
@@ -82,7 +53,6 @@ const useResizeCanvas = ({
   React.useEffect(() => {
     const handleResize = () => {
       if (containerRef.current && canvas) {
-        // console.log('size', containerRef.current.offsetHeight);
         resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
       }
     };
