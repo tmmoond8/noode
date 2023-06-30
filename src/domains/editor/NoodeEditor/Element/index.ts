@@ -1,2 +1,2 @@
 export * from './Text';
-export * from './Rect';
+export * from './FabricObject';

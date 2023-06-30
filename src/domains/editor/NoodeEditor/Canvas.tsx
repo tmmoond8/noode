@@ -5,7 +5,7 @@ import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { useDelay } from '@/hooks';
 import { WhiteBoard } from './WhiteBoard';
 import { resizeCanvas } from '@/utils/canvas';
-import { Text, Rect } from '@/domains/editor/NoodeEditor/Element';
+import { Text, FabricObject } from '@/domains/editor/NoodeEditor/Element';
 
 export function Canvas() {
   const { tab, width, height, setEditorSize } = useEditorUiStore(
@@ -26,20 +26,6 @@ export function Canvas() {
     }),
     shallow,
   );
-  const backgroundRef = React.useRef<Nullable<fabric.Rect>>(null);
-  console.log('textMap', textMap);
-  console.log('objectMap', objectMap);
-  console.log('canvas', canvas?.toDatalessObject());
-  // const [texts, setTexts] = React.useState<{ [key in string]: fabric.ITextboxOptions }>({
-  //   '0': { text: 'A', left: 0 },
-  //   '1': { text: 'B', left: 30 },
-  //   '2': { text: 'C', left: 60 },
-  // });
-  // console.log('texts', texts);
-
-  // const onTextChange = React.useCallback((id: string, options: fabric.ITextOptions) => {
-  //   setTexts((texts) => ({ ...texts, [id]: options }));
-  // }, []);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const delay500 = useDelay(500);
@@ -70,11 +56,11 @@ export function Canvas() {
     <Box className="editor-container" flex="1" ref={containerRef}>
       <canvas id="canvas" />
       <WhiteBoard />
-      {Object.entries(textMap).map(
+      {/* {Object.entries(textMap).map(
         ([uuid, options]) => canvas && <Text uuid={uuid} options={options} canvas={canvas} key={uuid} />,
-      )}
+      )} */}
       {Object.entries(objectMap).map(
-        ([uuid, options]) => canvas && <Rect uuid={uuid} options={options} canvas={canvas} key={uuid} />,
+        ([uuid, options]) => canvas && <FabricObject uuid={uuid} options={options} canvas={canvas} key={uuid} />,
       )}
     </Box>
   );
