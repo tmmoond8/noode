@@ -10,10 +10,13 @@ interface ITextboxProps {
 export const Textbox = React.memo(function TextboxElement({ uuid, canvas, options }: ITextboxProps) {
   const [textbox] = useState<fabric.Textbox>(() => new fabric.Textbox(options.text ?? '', options));
   const { setTextMap } = useFabricStore((state) => ({ setTextMap: state.setTextMap }), shallow);
-  console.log('text', uuid);
+  const initRef = React.useRef(false);
 
   useEffect(() => {
-    canvas.add(textbox);
+    if (!initRef.current) {
+      initRef.current = true;
+      canvas.add(textbox);
+    }
   }, [canvas, textbox]);
 
   useEffect(() => {
