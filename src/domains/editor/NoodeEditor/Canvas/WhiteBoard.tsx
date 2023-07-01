@@ -32,13 +32,13 @@ export function WhiteBoard() {
   }, [canvas]);
 
   React.useEffect(() => {
-    if (!canvas) {
+    if (!canvas || !whiteBoard) {
       return;
     }
-    // whiteBoard.set('width', whiteboardSize.width);
-    // whiteBoard.set('height', whiteboardSize.height);
-    // whiteBoard.setCoords();
-    // canvas.renderAll();
+    whiteBoard.set('width', whiteboardSize.width);
+    whiteBoard.set('height', whiteboardSize.height);
+    whiteBoard.setCoords();
+    canvas.renderAll();
   }, [whiteboardSize]);
 
   return null;
