@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react';
 import { shallow, useFabricStore } from '@/stores';
 import { WhiteBoard } from './WhiteBoard';
 import { Textbox, FabricObject } from '@/domains/editor/NoodeEditor/Canvas/Element';
-import { useInitFabric, useResizeCanvas } from '@/hooks/fabric';
+import { useInitFabric } from '@/hooks/fabric/useInitFabric';
 
 export function Canvas() {
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -17,7 +17,6 @@ export function Canvas() {
     shallow,
   );
 
-  useResizeCanvas({ canvas, containerRef });
   useInitFabric(containerRef);
 
   return (
