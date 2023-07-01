@@ -5,16 +5,17 @@ import { SideMenuKey } from '@/constants';
 export interface EditorUiStore {
   tab: Nullable<SideMenuKey>;
   setTab: (tab: Nullable<SideMenuKey>) => void;
-  whiteboardSize: Size;
-  setWhiteboardSize: ({ width, height }: Size) => void;
+  whiteboardSize: Bounds;
+  setWhiteboardSize: ({ width, height }: Bounds) => void;
 }
 
 export const useEditorUiStore = create<EditorUiStore>((set, get) => ({
   tab: null,
   setTab: (tab) => set({ tab }),
   whiteboardSize: {
-    width: 0,
-    height: 0,
+    width: 600,
+    height: 600,
+    unit: 'px',
   },
-  setWhiteboardSize: (whiteboardSize: Size) => set({ whiteboardSize }),
+  setWhiteboardSize: (whiteboardSize: Bounds) => set({ whiteboardSize }),
 }));

@@ -1,12 +1,14 @@
 import React from 'react';
-import { IconButton, Box, Flex, Button, Stack, Wrap } from '@chakra-ui/react';
+import { IconButton, Box, Flex, Button, Stack, Wrap, useDisclosure } from '@chakra-ui/react';
 import { BiUndo, BiRedo } from 'react-icons/bi';
+import { ResizeButton } from './ResizeButton';
 
 interface Props {
   title?: string;
 }
 
 export function Header({ title }: Props) {
+  const resizeModal = useDisclosure();
   return (
     <Flex
       as="header"
@@ -18,7 +20,7 @@ export function Header({ title }: Props) {
     >
       <Flex gap="8px">
         <Button>File</Button>
-        <Button>Resize</Button>
+        <ResizeButton text="Resize" />
         <Box w="1px" bg="gray.100" />
         <IconButton aria-label="" icon={<BiUndo size="34" />} />
         <IconButton aria-label="" icon={<BiRedo size="34" />} />
