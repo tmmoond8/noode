@@ -88,6 +88,10 @@ export const useDevLog = () => {
       }
     };
 
+    (globalThis as any).__dev__ = {
+      canvas,
+    };
+
     globalThis.addEventListener('keydown', handleKeyEvent);
 
     return () => {

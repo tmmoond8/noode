@@ -28,12 +28,17 @@ export function resizeCanvas(canvas: fabric.Canvas, newWidth: number, newHeight:
   }
 
   // 캔버스에 있는 모든 객체를 새로운 크기에 맞게 조정합니다
-  const deltaX = (newWidth - oldWidth) / 4;
-  const deltaY = (newHeight - oldHeight) / 4;
+  const deltaX = (newWidth - oldWidth) / 2;
+  const deltaY = (newHeight - oldHeight) / 2;
   const scaleX = newWidth / oldWidth;
   const scaleY = newHeight / oldHeight;
 
+  const activeObjects = canvas.getActiveObjects();
+
   canvas.forEachObject(function (object) {
+    if (activeObjects.includes(object)) {
+      return;
+    }
     switch (object.name) {
       case MAJOR_ELEMENTS.WhiteBoard: {
         object.left = scaleX * (object.left ?? 0);
@@ -50,6 +55,15 @@ export function resizeCanvas(canvas: fabric.Canvas, newWidth: number, newHeight:
     }
   });
 
-  // 변경사항을 적용합니다
+  const activeObject = canvas.getActiveObject();
+  if (activeObject) {
+    const { left = 0, top = 0 } = activeObject;
+    activeObject.set({
+      left: left + deltaX,
+      top: top + deltaY,
+    });
+    activeObject.setCoords();
+  }
+
   canvas.renderAll();
 }
