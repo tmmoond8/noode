@@ -23,6 +23,7 @@ export function WhiteBoard() {
       height: whiteboardSize.height,
       fill: '#ffffff',
       selectable: false,
+      type: 'Rect',
       name: MAJOR_ELEMENTS.WhiteBoard,
     });
     canvas.add(whiteBoard);

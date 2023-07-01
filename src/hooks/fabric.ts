@@ -35,6 +35,7 @@ export const useInitFabric = (containerRef: React.RefObject<HTMLDivElement>) => 
       };
     }
   }, [delay500]);
+  useDevLog();
 };
 
 export const useResizeCanvas = ({
@@ -71,4 +72,26 @@ export const useResizeCanvas = ({
     }
     resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
   }, [tab, canvas]);
+};
+
+export const useDevLog = () => {
+  const { canvas, objectMap } = useFabricStore();
+
+  React.useEffect(() => {
+    if (!canvas) {
+      return;
+    }
+    const handleKeyEvent = (e: KeyboardEvent) => {
+      if (e.key === 'Alt') {
+        console.log('canvas', canvas.toDatalessObject());
+        console.log('objectMap', objectMap);
+      }
+    };
+
+    globalThis.addEventListener('keydown', handleKeyEvent);
+
+    return () => {
+      globalThis.removeEventListener('keydown', handleKeyEvent);
+    };
+  }, [canvas]);
 };

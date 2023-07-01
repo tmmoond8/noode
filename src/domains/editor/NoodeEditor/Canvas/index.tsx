@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box } from '@chakra-ui/react';
 import { shallow, useFabricStore } from '@/stores';
 import { WhiteBoard } from './WhiteBoard';

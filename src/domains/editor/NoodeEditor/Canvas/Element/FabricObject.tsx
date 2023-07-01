@@ -12,20 +12,22 @@ interface IObjectProps {
 export const FabricObject = React.memo(function RectElement({ uuid, canvas, options }: IObjectProps) {
   const [object] = useState<fabric.Object>(() => createObject(options.type as ObjectType, options));
   const { setObjectMap } = useFabricStore((state) => ({ setObjectMap: state.setObjectMap }), shallow);
+  const initFlag = React.useRef(false);
 
   useEffect(() => {
-    canvas.add(object);
-  }, [canvas, object]);
+    if (!initFlag.current) {
+      initFlag.current = true;
+      canvas.add(object);
+    }
+  }, []);
 
   useEffect(() => {
-    console.info('object useEffect', uuid);
     object.setOptions(options);
     object.setCoords();
   }, [uuid, options, object]);
 
   useEffect(() => {
     const update = () => {
-      console.info('object update', uuid);
       setObjectMap(uuid, object.toObject());
     };
     object.on('moved', update);
