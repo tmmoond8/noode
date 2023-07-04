@@ -2,10 +2,11 @@ import React from 'react';
 import { shallow, useFabricStore } from '@/stores';
 
 export const useDevLog = () => {
-  const { canvas, objectMap } = useFabricStore(
-    (store) => ({
-      canvas: store.canvas,
-      objectMap: store.canvas,
+  const { canvas, objectMap, whiteboard } = useFabricStore(
+    (state) => ({
+      canvas: state.canvas,
+      objectMap: state.canvas,
+      whiteboard: state.whiteboard,
     }),
     shallow,
   );
@@ -18,6 +19,7 @@ export const useDevLog = () => {
       if (e.key === 'Alt') {
         console.log('canvas', canvas.toDatalessObject());
         console.log('objectMap', objectMap);
+        console.log('whiteboard', whiteboard);
       }
     };
 
@@ -30,5 +32,5 @@ export const useDevLog = () => {
     return () => {
       globalThis.removeEventListener('keydown', handleKeyEvent);
     };
-  }, [canvas]);
+  }, [canvas, objectMap, whiteboard]);
 };

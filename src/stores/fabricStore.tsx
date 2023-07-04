@@ -7,7 +7,11 @@ export interface FabricStore {
   textMap: { [key in string]: fabric.ITextboxOptions };
   setTextMap: (uuid: string, options: fabric.ITextboxOptions) => void;
   objectMap: { [key in string]: fabric.IObjectOptions };
-  setObjectMap: (uuid: string, options: fabric.IObjectOptions) => void;
+  setObjectMap: (uuid: string, updater: Updater<fabric.IObjectOptions>) => void;
+  whiteboard: Nullable<fabric.IRectOptions>;
+  setWhiteboard: SetState<fabric.IRectOptions>;
+  selectedObjects: Array<fabric.Object>;
+  setSelectedObjects: (objects: Array<fabric.Object>) => void;
 }
 
 export const useFabricStore = create<FabricStore>((set, get) => ({
@@ -24,13 +28,39 @@ export const useFabricStore = create<FabricStore>((set, get) => ({
     });
   },
   objectMap: {},
-  setObjectMap: (uuid: string, options: fabric.IObjectOptions) => {
+  setObjectMap: (uuid: string, updater: Updater<fabric.IObjectOptions>) => {
     const { objectMap } = get();
-    set({
-      objectMap: {
-        ...objectMap,
-        [uuid]: options,
-      },
-    });
+    if (typeof updater === 'function') {
+      if (!objectMap[uuid]) {
+        return;
+      }
+      set({
+        objectMap: {
+          ...objectMap,
+          [uuid]: updater(objectMap[uuid]),
+        },
+      });
+    } else {
+      set({
+        objectMap: {
+          ...objectMap,
+          [uuid]: updater,
+        },
+      });
+    }
+  },
+  whiteboard: null,
+  setWhiteboard: (updater) => {
+    if (typeof updater === 'function') {
+      const { whiteboard } = get();
+      const newData = updater(whiteboard!);
+      set({ whiteboard: newData });
+    } else {
+      set({ whiteboard: updater });
+    }
+  },
+  selectedObjects: [],
+  setSelectedObjects: (objects: Array<fabric.Object>) => {
+    set({ selectedObjects: objects });
   },
 }));

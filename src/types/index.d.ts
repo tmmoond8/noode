@@ -9,4 +9,5 @@ declare global {
     height: number;
     unit: Unit;
   };
+  type Updater<T> = T | ((prev: T) => T);
 }

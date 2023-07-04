@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { fabric } from 'fabric';
 import { shallow, useFabricStore } from '@/stores';
 import { ObjectType, OBJECT_TYPE } from '@/constants';
@@ -10,23 +10,23 @@ interface IObjectProps {
 }
 
 export const FabricObject = React.memo(function RectElement({ uuid, canvas, options }: IObjectProps) {
-  const [object] = useState<fabric.Object>(() => createObject(options.type as ObjectType, options));
+  const [object] = React.useState<fabric.Object>(() => createObject(options.type as ObjectType, options));
   const { setObjectMap } = useFabricStore((state) => ({ setObjectMap: state.setObjectMap }), shallow);
   const initFlag = React.useRef(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!initFlag.current) {
       initFlag.current = true;
       canvas.add(object);
     }
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     object.setOptions(options);
     object.setCoords();
   }, [uuid, options, object]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const update = () => {
       setObjectMap(uuid, object.toObject());
     };

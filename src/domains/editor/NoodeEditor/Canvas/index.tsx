@@ -7,8 +7,9 @@ import { useInitFabric } from '@/hooks/fabric/useInitFabric';
 
 export function Canvas() {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const { canvas, textMap, objectMap } = useFabricStore(
+  const { canvas, textMap, objectMap, whiteboard } = useFabricStore(
     (state) => ({
+      whiteboard: state.whiteboard,
       canvas: state.canvas,
       setCanvas: state.setCanvas,
       textMap: state.textMap,
@@ -22,7 +23,7 @@ export function Canvas() {
   return (
     <Box className="editor-container" flex="1" ref={containerRef}>
       <canvas id="canvas" />
-      <WhiteBoard />
+      <WhiteBoard options={whiteboard} />
       {Object.entries(textMap).map(
         ([uuid, options]) => canvas && <Textbox uuid={uuid} options={options} canvas={canvas} key={uuid} />,
       )}

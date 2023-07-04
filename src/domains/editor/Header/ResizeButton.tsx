@@ -18,8 +18,9 @@ import {
   DrawerFooter,
 } from '@chakra-ui/react';
 import { BsLockFill, BsUnlock } from 'react-icons/bs';
-import { useEditorUiStore } from '@/stores';
+import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { isEqual } from 'lodash-es';
+import { parseFloat } from '@/utils/string';
 
 interface Props {
   text?: string;
@@ -27,7 +28,20 @@ interface Props {
 
 export function ResizeButton({ text = '버튼' }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { whiteboardSize, setWhiteboardSize } = useEditorUiStore();
+  const { whiteboardSize, setWhiteboardSize } = useEditorUiStore(
+    (state) => ({
+      whiteboardSize: state.whiteboardSize,
+      setWhiteboardSize: state.setWhiteboardSize,
+    }),
+    shallow,
+  );
+  const { setWhiteboard } = useFabricStore(
+    (state) => ({
+      whiteboard: state.whiteboard,
+      setWhiteboard: state.setWhiteboard,
+    }),
+    shallow,
+  );
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const [customValue, setCustomValue] = React.useState<Bounds>({
     ...whiteboardSize,
@@ -121,6 +135,11 @@ export function ResizeButton({ text = '버튼' }: Props) {
               isDisabled={isDisabled}
               onClick={() => {
                 setWhiteboardSize(customValue);
+                setWhiteboard({
+                  ...whiteboardSize,
+                  width: parseFloat(customValue.width),
+                  height: parseFloat(customValue.height),
+                });
                 onClose();
               }}
             >

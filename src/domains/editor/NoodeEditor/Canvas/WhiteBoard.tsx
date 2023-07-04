@@ -3,43 +3,67 @@ import { fabric } from 'fabric';
 import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { MAJOR_ELEMENTS } from '@/constants';
 
-export function WhiteBoard() {
-  const [whiteBoard, setWhiteBoard] = React.useState<fabric.Rect>();
-  const { canvas } = useFabricStore((state) => ({ canvas: state.canvas }), shallow);
+interface Props {
+  options: Nullable<fabric.IRectOptions>;
+}
+
+export const WhiteBoard = React.memo(function ReactElement({ options }: Props) {
+  const [object, setObject] = React.useState<Nullable<fabric.Rect>>(null);
   const { whiteboardSize } = useEditorUiStore((state) => ({ whiteboardSize: state.whiteboardSize }), shallow);
+  const { canvas, whiteboard, setWhiteboard } = useFabricStore(
+    (state) => ({ canvas: state.canvas, whiteboard: state.whiteboard, setWhiteboard: state.setWhiteboard }),
+    shallow,
+  );
+  const initFlag = React.useRef(false);
 
   React.useEffect(() => {
-    if (!canvas) {
-      return;
+    if (canvas) {
+      const center = canvas.getCenter();
+      setWhiteboard({
+        top: center.top,
+        left: center.left,
+        originX: 'center',
+        originY: 'center',
+        width: whiteboardSize.width,
+        height: whiteboardSize.height,
+        fill: '#ffffff',
+        selectable: false,
+        type: 'Rect',
+        name: MAJOR_ELEMENTS.WhiteBoard,
+      });
     }
-    const center = canvas.getCenter();
-
-    const whiteBoard = new fabric.Rect({
-      top: center.top,
-      left: center.left,
-      originX: 'center',
-      originY: 'center',
-      width: whiteboardSize.width,
-      height: whiteboardSize.height,
-      fill: '#ffffff',
-      selectable: false,
-      type: 'Rect',
-      name: MAJOR_ELEMENTS.WhiteBoard,
-    });
-    canvas.add(whiteBoard);
-    setWhiteBoard(whiteBoard);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas]);
 
   React.useEffect(() => {
-    if (!canvas || !whiteBoard) {
-      return;
+    if (!initFlag.current && canvas && whiteboard) {
+      initFlag.current = true;
+      const _object = new fabric.Rect(whiteboard);
+      setObject(_object);
+      canvas.add(_object);
+      canvas.renderAll();
     }
-    whiteBoard.set('width', whiteboardSize.width);
-    whiteBoard.set('height', whiteboardSize.height);
-    whiteBoard.setCoords();
-    canvas.renderAll();
-  }, [whiteboardSize]);
+  }, [whiteboard]);
 
-  return null;
-}
+  React.useEffect(() => {
+    if (canvas && whiteboard && object) {
+      debugger;
+      object.setOptions(whiteboard);
+      object.setCoords();
+      canvas.renderAll();
+    }
+  }, [canvas, whiteboard, object]);
+
+  React.useEffect(() => {
+    if (object) {
+      const update = () => {
+        setWhiteboard(object.toObject());
+      };
+      object.on('moved', update);
+      object.on('scaled', update);
+      object.on('rotated', update);
+      object.on('changed', update);
+    }
+  }, [setWhiteboard, object]);
+
+  return <></>;
+});

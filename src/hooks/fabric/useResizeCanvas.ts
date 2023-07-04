@@ -18,9 +18,10 @@ export const useResizeCanvas = (containerRef: React.RefObject<HTMLDivElement>) =
   );
   React.useEffect(() => {
     const handleResize = () => {
-      if (containerRef.current && canvas) {
-        resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
+      if (!containerRef.current || !canvas) {
+        return;
       }
+      resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
     };
     handleResize();
     if (globalThis) {

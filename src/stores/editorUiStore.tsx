@@ -7,23 +7,32 @@ export interface EditorUiStore {
   tab: Nullable<SideMenuKey>;
   setTab: (tab: Nullable<SideMenuKey>) => void;
   whiteboardSize: Bounds;
-  setWhiteboardSize: ({ width, height }: Bounds) => void;
+  setWhiteboardSize: (whiteboardSize: Bounds) => void;
+  selectedObjects: any[];
+  setSelectedObjects: (objects: []) => void;
 }
 
 export const useEditorUiStore = create<EditorUiStore>((set, get) => ({
   tab: null,
   setTab: (tab) => set({ tab }),
   whiteboardSize: {
-    width: 600,
-    height: 600,
+    width: 300,
+    height: 300,
     unit: 'px',
   },
-  setWhiteboardSize: (whiteboardSize: Bounds) =>
+  setWhiteboardSize: (whiteboardSize: Bounds) => {
     set({
       whiteboardSize: {
         width: parseFloat(whiteboardSize.width),
         height: parseFloat(whiteboardSize.height),
         unit: whiteboardSize.unit,
       },
-    }),
+    });
+  },
+  selectedObjects: [],
+  setSelectedObjects: (selectedObjects: []) => {
+    set({
+      selectedObjects,
+    });
+  },
 }));
