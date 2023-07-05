@@ -3,15 +3,13 @@ import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { IEvent } from 'fabric/fabric-impl';
 
 export const useSelectionEvent = () => {
-  const { canvas, selectedObjects, setSelectedObjects } = useFabricStore(
+  const { canvas, setSelectedObjects } = useFabricStore(
     (state) => ({
       canvas: state.canvas,
-      selectedObjects: state.selectedObjects,
       setSelectedObjects: state.setSelectedObjects,
     }),
     shallow,
   );
-  const {} = useEditorUiStore((state) => ({}));
   React.useEffect(() => {
     if (!canvas) {
       return;

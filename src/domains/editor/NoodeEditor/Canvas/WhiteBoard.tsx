@@ -46,7 +46,6 @@ export const WhiteBoard = React.memo(function ReactElement({ options }: Props) {
 
   React.useEffect(() => {
     if (canvas && whiteboard && object) {
-      debugger;
       object.setOptions(whiteboard);
       object.setCoords();
       canvas.renderAll();

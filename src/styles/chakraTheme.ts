@@ -13,6 +13,13 @@ export const theme = extendTheme({
     heading: 'var(--font-inter)',
     body: 'var(--font-inter)',
   },
+  components: {
+    Stack: {
+      defaultProps: {
+        gap: 2,
+      },
+    },
+  },
 });
 
 type BaseTheme = typeof baseTheme;

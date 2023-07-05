@@ -6,7 +6,7 @@ import { Canvas } from './Canvas';
 
 export function NoodeEditor() {
   return (
-    <Stack width="100%" height="100%" flex="1" overflow="hidden">
+    <Stack width="100%" height="100%" flex="1" overflow="hidden" gap="0">
       <Toolbar />
       <Canvas />
       <BottomBar />

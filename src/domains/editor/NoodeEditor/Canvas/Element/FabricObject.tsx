@@ -49,6 +49,5 @@ function createObject(type: ObjectType, options: fabric.IObjectOptions) {
   if (type === OBJECT_TYPE.Triangle) {
     return new fabric.Triangle(options);
   }
-  debugger;
   return new fabric.Object();
 }
