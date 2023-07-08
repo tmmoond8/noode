@@ -34,7 +34,7 @@ export function Toolbar({ title }: Props) {
   //   );
   // }
   return (
-    <Flex h="48px" overflow="hidden" padding="0 20px" alignItems="center">
+    <Flex className="noode-toolbar" h="48px" overflow="hidden" padding="0 20px" alignItems="center">
       {isEmpty && <div>empty</div>}
       {isSingle && <SingleToolbar object={selectedObjects[0]} />}
     </Flex>

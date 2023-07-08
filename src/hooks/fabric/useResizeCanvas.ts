@@ -10,9 +10,10 @@ export const useResizeCanvas = (containerRef: React.RefObject<HTMLDivElement>) =
     }),
     shallow,
   );
-  const { tab } = useEditorUiStore(
+  const { tab, controlPanelData } = useEditorUiStore(
     (state) => ({
       tab: state.tab,
+      controlPanelData: state.controlPanelData,
     }),
     shallow,
   );
@@ -37,5 +38,5 @@ export const useResizeCanvas = (containerRef: React.RefObject<HTMLDivElement>) =
       return;
     }
     resizeCanvas(canvas, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
-  }, [tab, canvas]);
+  }, [tab, canvas, controlPanelData]);
 };

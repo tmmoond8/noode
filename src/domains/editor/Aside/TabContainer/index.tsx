@@ -10,13 +10,18 @@ import { css } from '@emotion/react';
 import { shallow, useEditorUiStore } from '@/stores';
 
 export function TabContainer() {
-  const { tab, setTab } = useEditorUiStore(
+  const { tab, controlPanelData, setTab } = useEditorUiStore(
     (state) => ({
       tab: state.tab,
       setTab: state.setTab,
+      controlPanelData: state.controlPanelData,
     }),
     shallow,
   );
+
+  if (controlPanelData) {
+    return <></>;
+  }
 
   return (
     <>

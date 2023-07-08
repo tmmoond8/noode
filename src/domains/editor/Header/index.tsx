@@ -11,6 +11,7 @@ export function Header({ title }: Props) {
   const resizeModal = useDisclosure();
   return (
     <Flex
+      className="noode-header"
       as="header"
       alignItems="center"
       justifyContent="space-between"

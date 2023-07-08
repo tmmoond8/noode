@@ -24,6 +24,7 @@ export const FabricObject = React.memo(function RectElement({ uuid, canvas, opti
   React.useEffect(() => {
     object.setOptions(options);
     object.setCoords();
+    canvas.renderAll();
   }, [uuid, options, object]);
 
   React.useEffect(() => {

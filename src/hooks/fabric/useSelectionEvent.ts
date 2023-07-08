@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
+import { shallow, useFabricStore } from '@/stores';
 import { IEvent } from 'fabric/fabric-impl';
+import { ControlPanelData } from '@/types/editor';
 
 export const useSelectionEvent = () => {
   const { canvas, setSelectedObjects } = useFabricStore(
@@ -10,6 +11,7 @@ export const useSelectionEvent = () => {
     }),
     shallow,
   );
+
   React.useEffect(() => {
     if (!canvas) {
       return;
