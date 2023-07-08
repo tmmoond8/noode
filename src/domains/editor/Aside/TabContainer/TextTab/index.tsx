@@ -4,7 +4,7 @@ import { Box, VStack, Button, Wrap } from '@chakra-ui/react';
 import { shallow, useFabricStore } from '@/stores';
 import { generateUUID } from '@/utils/string';
 
-export function TextPanel() {
+export function TextTab() {
   const { canvas, setTextMap } = useFabricStore(
     (state) => ({ canvas: state.canvas, setTextMap: state.setTextMap }),
     shallow,

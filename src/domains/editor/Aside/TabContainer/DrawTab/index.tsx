@@ -5,11 +5,11 @@ interface Props {
   title?: string;
 }
 
-export function DrawPanel({ title }: Props) {
+export function DrawTab({ title }: Props) {
   return (
     <Box padding="20px">
       <Text size="3xl" color="whiteAlpha.600">
-        DrawPanel
+        DrawTab
       </Text>
     </Box>
   );

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { BiChevronLeft } from 'react-icons/bi';
-import { ElementPanel } from './ElementPanel';
-import { TextPanel } from './TextPanel';
-import { UploadPanel } from './UploadPanel';
-import { DrawPanel } from './DrawPanel';
+import { ElementTab } from './ElementTab';
+import { TextTab } from './TextTab';
+import { UploadTab } from './UploadTab';
+import { DrawTab } from './DrawTab';
 import { useTheme } from '@/styles/chakraTheme';
 import { css } from '@emotion/react';
 import { shallow, useEditorUiStore } from '@/stores';
@@ -20,10 +20,10 @@ export function TabContainer() {
 
   return (
     <>
-      {tab === 'element' && <ElementPanel />}
-      {tab === 'text' && <TextPanel />}
-      {tab === 'upload' && <UploadPanel />}
-      {tab === 'draw' && <DrawPanel />}
+      {tab === 'element' && <ElementTab />}
+      {tab === 'text' && <TextTab />}
+      {tab === 'upload' && <UploadTab />}
+      {tab === 'draw' && <DrawTab />}
       <Box
         position="absolute"
         right="-12px"

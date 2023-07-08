@@ -8,7 +8,7 @@ interface Props {
   title?: string;
 }
 
-export function ElementPanel({ title }: Props) {
+export function ElementTab({ title }: Props) {
   const { canvas, setObjectMap } = useFabricStore(
     (state) => ({
       canvas: state.canvas,
