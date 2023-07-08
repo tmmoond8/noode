@@ -1,13 +1,8 @@
 import React from 'react';
-import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
-import { BiChevronLeft } from 'react-icons/bi';
+import { Box, Flex } from '@chakra-ui/react';
 import { SideBar } from './SideBar';
-import { ElementPanel } from './ElementPanel';
-import { TextPanel } from './TextPanel';
-import { UploadPanel } from './UploadPanel';
-import { DrawPanel } from './DrawPanel';
 import { useTheme } from '@/styles/chakraTheme';
-import { css } from '@emotion/react';
+import { TabContainer } from './TabContainer';
 import { shallow, useEditorUiStore } from '@/stores';
 
 export function SideTab() {
@@ -22,33 +17,9 @@ export function SideTab() {
   return (
     <Flex height="100%" zIndex={10}>
       <SideBar />
-      {tab && (
-        <Box position="relative" width="343px" height="100%" backgroundColor="gray.700">
-          {tab === 'element' && <ElementPanel />}
-          {tab === 'text' && <TextPanel />}
-          {tab === 'upload' && <UploadPanel />}
-          {tab === 'draw' && <DrawPanel />}
-          <Box
-            position="absolute"
-            right="-12px"
-            top="50%"
-            transform="translateY(-50%)"
-            cursor="pointer"
-            onClick={() => setTab(null)}
-            css={css`
-              .chevron-left {
-                position: absolute;
-                right: 0;
-                top: 50%;
-                transform: translateY(-50%);
-              }
-            `}
-          >
-            <FoldButton />
-            <BiChevronLeft className="chevron-left" color="white" />
-          </Box>
-        </Box>
-      )}
+      <Box position="relative" width="343px" height="100%" backgroundColor="gray.700">
+        <TabContainer />
+      </Box>
     </Flex>
   );
 }
