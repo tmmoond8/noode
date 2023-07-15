@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Stack, Wrap } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { shallow, useFabricStore } from '@/stores';
 import { SingleToolbar } from './SingleToolbar';
 
@@ -19,20 +19,6 @@ export function Toolbar({ title }: Props) {
   const isEmpty = selectedObjects.length === 0;
   const group = selectedObjects.length > 1;
 
-  console.log('selectedObjects', selectedObjects);
-
-  // if (isEmpty) {
-  //   return <Flex h="48px">Toolbar - Menu</Flex>;
-  // }
-
-  // if (isSingle) {
-  //   const singleObject = selectedObjects[0];
-  //   return (
-  //     <Flex h="48px">
-  //       {singleObject.name} {singleObject.type}
-  //     </Flex>
-  //   );
-  // }
   return (
     <Flex className="noode-toolbar" h="48px" overflow="hidden" padding="0 20px" alignItems="center">
       {isEmpty && <div>empty</div>}

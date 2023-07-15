@@ -23,8 +23,9 @@ export function ColorPanel() {
     }),
     shallow,
   );
-  const { selectedObjects, setSelectedObjects, setObjectMap } = useFabricStore(
+  const { selectedObjects, setSelectedObjects, setObjectMap, canvas } = useFabricStore(
     (state) => ({
+      canvas: state.canvas,
       selectedObjects: state.selectedObjects,
       objectMap: state.objectMap,
       setObjectMap: state.setObjectMap,
@@ -37,18 +38,17 @@ export function ColorPanel() {
       return;
     }
 
-    const objectIdList = controlPanelData.objectIdList;
-    objectIdList.forEach((objectId) => {
-      setObjectMap(objectId, (prev) => ({ ...prev, fill: color }));
+    selectedObjects.forEach((object) => {
+      setObjectMap(object.name!, (prev) => ({ ...prev, fill: color }));
     });
-    setControlPanelData({ ...controlPanelData, context: { color } });
-    // setSelectedObjects(
-    //   selectedObjects.map((object) => {
-    //     const cloned = fabric.util.object.clone(object);
-    //     cloned.set('fill', color);
-    //     return cloned;
-    //   }),
-    // );
+    setControlPanelData({ ...controlPanelData });
+    setSelectedObjects(
+      selectedObjects.map((object) => {
+        const cloned = fabric.util.object.clone(object);
+        cloned.set('fill', color);
+        return cloned;
+      }),
+    );
   };
 
   return (

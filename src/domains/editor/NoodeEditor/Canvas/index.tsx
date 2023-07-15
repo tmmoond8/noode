@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { WhiteBoard } from './WhiteBoard';
-import { Textbox, FabricObject } from '@/domains/editor/NoodeEditor/Canvas/Element';
+import { Textbox, FabricObject, SelectedObject } from '@/domains/editor/NoodeEditor/Canvas/Element';
 import { useInitFabric } from '@/hooks/fabric/useInitFabric';
 import { useTheme } from '@/styles/chakraTheme';
 
@@ -49,6 +49,7 @@ export function Canvas() {
         {Object.entries(objectMap).map(
           ([uuid, options]) => canvas && <FabricObject uuid={uuid} options={options} canvas={canvas} key={uuid} />,
         )}
+        <SelectedObject canvas={canvas} />
       </Box>
     </Box>
   );

@@ -11,8 +11,6 @@ export interface EditorUiStore {
   setCanvasSize: (canvasSize: Bounds) => void;
   whiteboardSize: Bounds;
   setWhiteboardSize: (whiteboardSize: Bounds) => void;
-  selectedObjects: any[];
-  setSelectedObjects: (objects: []) => void;
   controlPanelData: Nullable<ControlPanelData>;
   setControlPanelData: (controlPanelData: Nullable<ControlPanelData>) => void;
 }
@@ -46,12 +44,6 @@ export const useEditorUiStore = create<EditorUiStore>((set, get) => ({
         height: parseFloat(whiteboardSize.height),
         unit: whiteboardSize.unit,
       },
-    });
-  },
-  selectedObjects: [],
-  setSelectedObjects: (selectedObjects: []) => {
-    set({
-      selectedObjects,
     });
   },
   controlPanelData: null,

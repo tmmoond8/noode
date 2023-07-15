@@ -1,8 +1,7 @@
 import React from 'react';
 import { fabric } from 'fabric';
-import { Text, Flex, Stack, Wrap } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import { ColorButton } from './toolbarIconButtons/ColorButton';
-import { NumberStepper } from './toolbarIconButtons/NumberStepper';
 import { shallow, useEditorUiStore } from '@/stores';
 
 interface Props {
@@ -17,6 +16,7 @@ export function SingleToolbar({ object }: Props) {
     }),
     shallow,
   );
+
   return (
     <Flex alignItems="center">
       <Text>{object.type}</Text>
@@ -27,10 +27,6 @@ export function SingleToolbar({ object }: Props) {
           onClick={() => {
             setControlPanelData({
               type: 'color',
-              objectIdList: [object.name!],
-              context: {
-                color: object.fill,
-              },
             });
           }}
         />

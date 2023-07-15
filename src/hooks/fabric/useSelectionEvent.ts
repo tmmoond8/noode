@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, useFabricStore } from '@/stores';
+import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { IEvent } from 'fabric/fabric-impl';
 import { ControlPanelData } from '@/types/editor';
 
@@ -8,6 +8,12 @@ export const useSelectionEvent = () => {
     (state) => ({
       canvas: state.canvas,
       setSelectedObjects: state.setSelectedObjects,
+    }),
+    shallow,
+  );
+  const { setControlPanelData } = useEditorUiStore(
+    (state) => ({
+      setControlPanelData: state.setControlPanelData,
     }),
     shallow,
   );
@@ -32,17 +38,14 @@ export const useSelectionEvent = () => {
         console.warn('selection:update null');
         return;
       }
-      console.info(selectionEvent.selected);
+      const selected = selectionEvent.selected;
+      setSelectedObjects(selected);
     };
 
     const handleClearSelection = (selectionEvent: IEvent<Event>) => {
       console.info('selection:cleared', selectionEvent);
       setSelectedObjects([]);
-      if (!selectionEvent?.selected) {
-        console.warn('selection:cleared null');
-        return;
-      }
-      console.info(selectionEvent.selected);
+      setControlPanelData(null);
     };
 
     canvas.on('selection:created', handleCreateSelection);

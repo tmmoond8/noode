@@ -7,16 +7,17 @@ import { useEditorUiStore, shallow } from '@/stores';
 
 export function SideBar() {
   const theme = useTheme();
-  const { tab, setTab } = useEditorUiStore(
+  const { tab, setTab, setControlPanelData } = useEditorUiStore(
     (state) => ({
       tab: state.tab,
       setTab: state.setTab,
+      setControlPanelData: state.setControlPanelData,
     }),
     shallow,
   );
 
   return (
-    <Stack bg="gray.800" height="100%" width="72px" padding="12px 0" gap="0">
+    <Stack bg="gray.800" height="100%" width="72px" padding="12px 0" gap="0" onClick={() => setControlPanelData(null)}>
       {SIDE_MENUS.map(({ name, key, Icon }) => (
         <Stack
           key={key}
