@@ -1,5 +1,6 @@
 import React from 'react';
 import { fabric } from 'fabric';
+import throttle from 'lodash-es/throttle';
 import { shallow, useFabricStore } from '@/stores';
 import { ObjectType, OBJECT_TYPE } from '@/constants';
 
@@ -13,6 +14,7 @@ export const FabricObject = React.memo(function RectElement({ uuid, canvas, opti
   const [object] = React.useState<fabric.Object>(() => createObject(options.type as ObjectType, options));
   const { setObjectMap } = useFabricStore((state) => ({ setObjectMap: state.setObjectMap }), shallow);
   const initFlag = React.useRef(false);
+  const initFlag2 = React.useRef(false);
 
   React.useEffect(() => {
     if (!initFlag.current) {
@@ -24,17 +26,20 @@ export const FabricObject = React.memo(function RectElement({ uuid, canvas, opti
   React.useEffect(() => {
     object.setOptions(options);
     object.setCoords();
-    canvas.renderAll();
   }, [uuid, options, object]);
 
   React.useEffect(() => {
-    const update = () => {
-      setObjectMap(uuid, object.toObject());
-    };
-    object.on('moved', update);
-    object.on('scaled', update);
-    object.on('rotated', update);
-    object.on('changed', update);
+    if (!initFlag2.current) {
+      initFlag2.current = true;
+      const update = throttle(() => {
+        setObjectMap(uuid, object.toObject());
+      }, 100);
+      object.on('moving', update);
+      object.on('scaling', update);
+      object.on('rotating', update);
+      object.on('skewing', update);
+      object.on('resizing', update);
+    }
   }, [uuid, setObjectMap, object]);
 
   return <></>;

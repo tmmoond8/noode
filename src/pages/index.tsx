@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <Stack gap="0" height="100%">
       <Header />
-      <Flex flex="1">
+      <Flex flex="1" overflow="hidden">
         <Aside />
         <NoodeEditor />
       </Flex>

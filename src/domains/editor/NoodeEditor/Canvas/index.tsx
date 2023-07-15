@@ -1,12 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box } from '@chakra-ui/react';
-import { shallow, useFabricStore } from '@/stores';
+import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
 import { WhiteBoard } from './WhiteBoard';
 import { Textbox, FabricObject } from '@/domains/editor/NoodeEditor/Canvas/Element';
 import { useInitFabric } from '@/hooks/fabric/useInitFabric';
+import { useTheme } from '@/styles/chakraTheme';
 
 export function Canvas() {
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const { colors } = useTheme();
+  const { canvasSize } = useEditorUiStore(
+    (state) => ({
+      canvasSize: state.canvasSize,
+    }),
+    shallow,
+  );
   const { canvas, textMap, objectMap, whiteboard } = useFabricStore(
     (state) => ({
       whiteboard: state.whiteboard,
@@ -18,18 +25,31 @@ export function Canvas() {
     shallow,
   );
 
-  useInitFabric(containerRef);
+  useInitFabric();
 
   return (
-    <Box className="editor-container" flex="1" ref={containerRef}>
-      <canvas id="canvas" />
-      <WhiteBoard options={whiteboard} />
-      {Object.entries(textMap).map(
-        ([uuid, options]) => canvas && <Textbox uuid={uuid} options={options} canvas={canvas} key={uuid} />,
-      )}
-      {Object.entries(objectMap).map(
-        ([uuid, options]) => canvas && <FabricObject uuid={uuid} options={options} canvas={canvas} key={uuid} />,
-      )}
+    <Box flex="1" bg={colors.gray[600]} overflow="hidden">
+      <Box
+        className="editor-container"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        position="relative"
+        flex="1"
+        width={canvasSize.width}
+        height={canvasSize.height}
+        left={`calc((100% - ${canvasSize.width}${canvasSize.unit}) / 2)`}
+        top={`calc((100% - ${canvasSize.height}${canvasSize.unit}) / 2)`}
+      >
+        <canvas id="canvas" />
+        <WhiteBoard options={whiteboard} />
+        {Object.entries(textMap).map(
+          ([uuid, options]) => canvas && <Textbox uuid={uuid} options={options} canvas={canvas} key={uuid} />,
+        )}
+        {Object.entries(objectMap).map(
+          ([uuid, options]) => canvas && <FabricObject uuid={uuid} options={options} canvas={canvas} key={uuid} />,
+        )}
+      </Box>
     </Box>
   );
 }

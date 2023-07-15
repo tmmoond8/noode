@@ -1,24 +1,31 @@
 import React from 'react';
 import { useDelay } from '@/hooks';
 import { fabric } from 'fabric';
-import { shallow, useFabricStore } from '@/stores';
+import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
+import { useTheme } from '@/styles/chakraTheme';
 
-export const useInitializeCanvas = (containerRef: React.RefObject<HTMLDivElement>) => {
+export const useInitializeCanvas = () => {
   const delay500 = useDelay(500);
+  const { colors } = useTheme();
   const { setCanvas } = useFabricStore(
     (state) => ({
       setCanvas: state.setCanvas,
     }),
     shallow,
   );
+  const { canvasSize } = useEditorUiStore(
+    (state) => ({
+      canvasSize: state.canvasSize,
+    }),
+    shallow,
+  );
 
   React.useEffect(() => {
-    if (containerRef.current && delay500) {
-      const { offsetHeight, offsetWidth } = containerRef.current;
+    if (delay500) {
       const _canvas = new fabric.Canvas('canvas', {
-        width: offsetWidth,
-        height: offsetHeight,
-        backgroundColor: 'gray',
+        width: canvasSize.width,
+        height: canvasSize.height,
+        backgroundColor: colors.gray[600],
         renderOnAddRemove: true,
       });
       setCanvas(_canvas);

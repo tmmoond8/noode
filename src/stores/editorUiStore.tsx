@@ -7,6 +7,8 @@ import { ControlPanelData } from '@/types/editor';
 export interface EditorUiStore {
   tab: Nullable<SideMenuKey>;
   setTab: (tab: Nullable<SideMenuKey>) => void;
+  canvasSize: Bounds;
+  setCanvasSize: (canvasSize: Bounds) => void;
   whiteboardSize: Bounds;
   setWhiteboardSize: (whiteboardSize: Bounds) => void;
   selectedObjects: any[];
@@ -18,6 +20,20 @@ export interface EditorUiStore {
 export const useEditorUiStore = create<EditorUiStore>((set, get) => ({
   tab: null,
   setTab: (tab) => set({ tab }),
+  canvasSize: {
+    width: 328 * 8,
+    height: 168 * 8,
+    unit: 'px',
+  },
+  setCanvasSize: (canvasSize: Bounds) => {
+    set({
+      canvasSize: {
+        width: parseFloat(canvasSize.width),
+        height: parseFloat(canvasSize.height),
+        unit: canvasSize.unit,
+      },
+    });
+  },
   whiteboardSize: {
     width: 300,
     height: 300,
