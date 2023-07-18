@@ -6,13 +6,30 @@ import { fabric } from 'fabric';
 
 const { colors } = theme as Theme;
 
+const getColorSet = (color: keyof typeof colors) => [
+  { label: 'dark ' + color, value: colors[color][900] },
+  { label: 'deep ' + color, value: colors[color][700] },
+  { label: color, value: colors[color][500] },
+  { label: 'pastel ' + color, value: colors[color][300] },
+  { label: 'light ' + color, value: colors[color][100] },
+  { label: 'pale ' + color, value: colors[color][50] },
+];
+
 const SOLID_COLOR_SET = [
+  // 무채색
   { label: 'black', value: colors.black },
   { label: 'deep gray', value: colors.gray[700] },
   { label: 'gray', value: colors.gray[500] },
   { label: 'gray', value: colors.gray[300] },
   { label: 'light gray', value: colors.gray[100] },
   { label: 'white', value: colors.white },
+  ...getColorSet('red'),
+  ...getColorSet('blue'),
+  ...getColorSet('teal'),
+  ...getColorSet('green'),
+  ...getColorSet('yellow'),
+  ...getColorSet('orange'),
+  ...getColorSet('purple'),
 ];
 
 export function ColorPanel() {
