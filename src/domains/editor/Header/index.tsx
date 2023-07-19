@@ -1,14 +1,15 @@
 import React from 'react';
-import { IconButton, Box, Flex, Button, Stack, Wrap, useDisclosure } from '@chakra-ui/react';
+import { IconButton, Box, Flex, Button, useDisclosure } from '@chakra-ui/react';
 import { BiUndo, BiRedo } from 'react-icons/bi';
 import { ResizeButton } from './ResizeButton';
+import { ExportButton } from './ExportButton';
+import { useFabricStore } from '@/stores';
 
 interface Props {
   title?: string;
 }
 
 export function Header({ title }: Props) {
-  const resizeModal = useDisclosure();
   return (
     <Flex
       className="noode-header"
@@ -28,6 +29,8 @@ export function Header({ title }: Props) {
       </Flex>
 
       <Flex gap="8px">
+        <ExportButton />
+        <Button>Save</Button>
         <Button>Login</Button>
       </Flex>
     </Flex>

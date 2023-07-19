@@ -135,11 +135,11 @@ export function ResizeButton({ text = '버튼' }: Props) {
               isDisabled={isDisabled}
               onClick={() => {
                 setWhiteboardSize(customValue);
-                setWhiteboard({
-                  ...whiteboardSize,
+                setWhiteboard((prev) => ({
+                  ...prev,
                   width: parseFloat(customValue.width),
                   height: parseFloat(customValue.height),
-                });
+                }));
                 onClose();
               }}
             >
