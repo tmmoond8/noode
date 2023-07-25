@@ -3,6 +3,8 @@ import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '@/styles/chakraTheme';
 import { Inter } from 'next/font/google';
+import { Provider } from 'react-redux';
+import store from '@/stores';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +19,9 @@ export default function App({ Component, pageProps }: AppProps) {
         `}
       </style>
       <ChakraProvider theme={theme} resetCSS>
-        <Component {...pageProps} />
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
       </ChakraProvider>
     </>
   );
