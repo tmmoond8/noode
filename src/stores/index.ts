@@ -9,29 +9,41 @@ export * from './editorUiStore';
 
 import ageStore, { ageActions } from './ageStore';
 import levelStore, { levelActions } from './levelStore';
+import React from 'react';
 
 const store = configureStore({
   reducer: {
-    age: undoable(ageStore, {
-      undoType: 'age/undo',
-      redoType: 'age/redo',
+    // ffabric: ageStore,
+    ffabric: undoable(ageStore, {
+      undoType: 'ffabric/undo',
+      redoType: 'ffabric/redo',
     }),
     level: undoable(levelStore, {
       undoType: 'level/undo',
       redoType: 'level/redo',
     }),
   },
+  devTools: false,
 });
 
 export default store;
 
 export const actions = {
-  age: ageActions,
+  ffabric: ageActions,
   level: levelActions,
 };
 
 export const useActions = () => actions;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export const useDispatch = () => _useDispatch<AppDispatch>();
+export const useDispatch = () => {
+  const dispatch = _useDispatch<AppDispatch>();
+  return React.useMemo(
+    () => ({
+      dispatch,
+      actions,
+    }),
+    [dispatch],
+  );
+};
 export const useSelector: TypedUseSelectorHook<RootState> = _useSelector;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
+import { shallow, useEditorUiStore, useFabricStore, useSelector } from '@/stores';
 import { WhiteBoard } from './WhiteBoard';
 import { Textbox, FabricObject, SelectedObject } from '@/domains/editor/NoodeEditor/Canvas/Element';
 import { useInitFabric } from '@/hooks/fabric/useInitFabric';
@@ -14,16 +14,12 @@ export function Canvas() {
     }),
     shallow,
   );
-  const { canvas, textMap, objectMap, whiteboard } = useFabricStore(
-    (state) => ({
-      whiteboard: state.whiteboard,
-      canvas: state.canvas,
-      setCanvas: state.setCanvas,
-      textMap: state.textMap,
-      objectMap: state.objectMap,
-    }),
-    shallow,
-  );
+  const { whiteboard, canvas, textMap, objectMap } = useSelector((state) => ({
+    whiteboard: state.ffabric.present.whiteboard,
+    canvas: state.ffabric.present.canvas,
+    textMap: state.ffabric.present.textMap,
+    objectMap: state.ffabric.present.objectMap,
+  }));
 
   useInitFabric();
 

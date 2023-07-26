@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text, Grid, Stack, Wrap } from '@chakra-ui/react';
 import { theme, Theme, useTheme } from '@/styles/chakraTheme';
-import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
+import { shallow, useDispatch, useEditorUiStore, useFabricStore, useSelector } from '@/stores';
 import { fabric } from 'fabric';
 
 const { colors } = theme as Theme;
@@ -40,31 +40,45 @@ export function ColorPanel() {
     }),
     shallow,
   );
-  const { selectedObjects, setSelectedObjects, setObjectMap, canvas } = useFabricStore(
-    (state) => ({
-      canvas: state.canvas,
-      selectedObjects: state.selectedObjects,
-      objectMap: state.objectMap,
-      setObjectMap: state.setObjectMap,
-      setSelectedObjects: state.setSelectedObjects,
-    }),
-    shallow,
-  );
+  const { canvas, objectMap, selectedObjects } = useSelector((state) => ({
+    canvas: state.ffabric.present.canvas,
+    objectMap: state.ffabric.present.objectMap,
+    selectedObjects: state.ffabric.present.selectedObjects,
+  }));
+  const { dispatch, actions } = useDispatch();
+  // const { selectedObjects, setSelectedObjects, setObjectMap, canvas } = useFabricStore(
+  //   (state) => ({
+  //     canvas: state.canvas,
+  //     selectedObjects: state.selectedObjects,
+  //     objectMap: state.objectMap,
+  //     setObjectMap: state.setObjectMap,
+  //     setSelectedObjects: state.setSelectedObjects,
+  //   }),
+  //   shallow,
+  // );
   const handleClick = (color: string) => {
     if (!controlPanelData) {
       return;
     }
 
     selectedObjects.forEach((object) => {
-      setObjectMap(object.name!, (prev) => ({ ...prev, fill: color }));
+      dispatch(
+        actions.ffabric.setObjectMap({
+          uuid: object.name!,
+          updater: (prev) => ({ ...prev, fill: color }),
+        }),
+      );
+      // setObjectMap(object.name!, (prev) => ({ ...prev, fill: color }));
     });
     setControlPanelData({ ...controlPanelData });
-    setSelectedObjects(
-      selectedObjects.map((object) => {
-        const cloned = fabric.util.object.clone(object);
-        cloned.set('fill', color);
-        return cloned;
-      }),
+    dispatch(
+      actions.ffabric.setSelectedObjects(
+        selectedObjects.map((object) => {
+          const cloned = fabric.util.object.clone(object);
+          cloned.set('fill', color);
+          return cloned;
+        }),
+      ),
     );
   };
 

@@ -1,26 +1,73 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, CaseReducer, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-  age: 29,
+export interface FabricState {
+  canvas: Nullable<fabric.Canvas>;
+  textMap: { [key in string]: fabric.ITextboxOptions };
+  objectMap: { [key in string]: fabric.IObjectOptions };
+  whiteboard: Nullable<fabric.IRectOptions>;
+  selectedObjects: Array<fabric.Object>;
+}
+
+type R<T> = CaseReducer<FabricState, PayloadAction<T>>;
+
+export type FabricReducers = {
+  setCanvas: CaseReducer<FabricState, PayloadAction<fabric.Canvas>>;
+  setTextMap: R<{
+    uuid: string;
+    options: fabric.ITextboxOptions;
+  }>;
+  setObjectMap: R<{
+    uuid: string;
+    updater: Updater<fabric.IObjectOptions>;
+  }>;
+  setWhiteboard: R<fabric.IRectOptions>;
+  setSelectedObjects: R<Array<fabric.Object>>;
+  undo: () => void;
+  redo: () => void;
 };
 
-const ageSlice = createSlice({
+const initialState: FabricState = {
+  canvas: null,
+  textMap: {},
+  objectMap: {},
+  whiteboard: null,
+  selectedObjects: [],
+};
+
+const ageSlice = createSlice<FabricState, FabricReducers>({
   name: 'age',
   initialState,
   reducers: {
-    addNumber: (state, action) => {
-      state.age = state.age + action.payload;
+    setCanvas: (state, action) => {
+      state.canvas = action.payload as any;
     },
+    setTextMap: (state, action) => {
+      state.textMap[action.payload.uuid] = action.payload.options as any;
+    },
+    setObjectMap: (state, action) => {
+      console.log('state.objectMap', state.objectMap);
+      for (let key in state) console.log(key);
+      state.objectMap = {
+        ...state.objectMap,
+        [action.payload.uuid]: action.payload.updater,
+      } as any;
+      // state.objectMap[action.payload.uuid] = action.payload.updater as any;
 
-    minusNumber: (state, action) => {
-      state.age = state.age - action.payload;
+      // state.objectMap[action.payload.uuid] =
+      //   typeof action.payload.updater === 'function'
+      //     ? action.payload.updater(state.objectMap[action.payload.uuid] as any)
+      //     : (action.payload.updater as any);
+    },
+    setWhiteboard: (state, action) => {
+      state.whiteboard = action.payload as any;
+    },
+    setSelectedObjects: (state, action) => {
+      state.selectedObjects = action.payload as any;
     },
     undo: () => {},
     redo: () => {},
   },
 });
 
-// 액션크리에이터는 컴포넌트에서 사용하기 위해 export 하고
 export const ageActions = ageSlice.actions;
-// reducer 는 configStore에 등록하기 위해 export default 합니다.
 export default ageSlice.reducer;

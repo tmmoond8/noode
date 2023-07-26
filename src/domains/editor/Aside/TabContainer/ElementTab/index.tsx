@@ -1,7 +1,7 @@
 import React from 'react';
 import { fabric } from 'fabric';
 import { Box, Text, VStack, Flex, Stack, Wrap, Button } from '@chakra-ui/react';
-import { shallow, useFabricStore } from '@/stores';
+import { shallow, useDispatch, useFabricStore, useSelector } from '@/stores';
 import { generateUUID } from '@/utils/string';
 
 interface Props {
@@ -9,13 +9,17 @@ interface Props {
 }
 
 export function ElementTab({ title }: Props) {
-  const { canvas, setObjectMap } = useFabricStore(
-    (state) => ({
-      canvas: state.canvas,
-      setObjectMap: state.setObjectMap,
-    }),
-    shallow,
-  );
+  const { canvas } = useSelector((state) => ({
+    canvas: state.ffabric.present.canvas,
+  }));
+  const { dispatch, actions } = useDispatch();
+  // const {  setObjectMap } = useFabricStore(
+  //   (state) => ({
+  //     canvas: state.canvas,
+  //     setObjectMap: state.setObjectMap,
+  //   }),
+  //   shallow,
+  // );
   return (
     <Box width="343px" height="100%" backgroundColor="gray.700" padding="20px">
       <VStack>
@@ -35,8 +39,16 @@ export function ElementTab({ title }: Props) {
               name: uuid,
               type: 'Rect',
             });
+            console.log('add rect');
             // canvas.add(rect);
-            setObjectMap(uuid, rect);
+            dispatch(
+              // { type: 'abc' } as any,
+              actions.ffabric.setObjectMap({
+                uuid,
+                updater: JSON.parse(JSON.stringify(rect)),
+              }),
+            );
+            // setObjectMap(uuid, rect);
           }}
         >
           Rect 추가
@@ -57,7 +69,13 @@ export function ElementTab({ title }: Props) {
               type: 'Circle',
             });
             // canvas.add(circle);
-            setObjectMap(uuid, circle);
+            dispatch(
+              actions.ffabric.setObjectMap({
+                uuid,
+                updater: circle,
+              }),
+            );
+            // setObjectMap(uuid, circle);
           }}
         >
           Circle 추가
@@ -79,7 +97,13 @@ export function ElementTab({ title }: Props) {
               type: 'Triangle',
             });
             // canvas.add(triangle);
-            setObjectMap(uuid, triangle);
+            dispatch(
+              actions.ffabric.setObjectMap({
+                uuid,
+                updater: triangle,
+              }),
+            );
+            // setObjectMap(uuid, triangle);
           }}
         >
           Triangle 추가

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fabric } from 'fabric';
-import { shallow, useFabricStore } from '@/stores';
+import { shallow, useFabricStore, useSelector } from '@/stores';
 import { compareObject } from '@/utils/canvas';
 
 interface IObjectProps {
@@ -10,12 +10,9 @@ interface IObjectProps {
 export const SelectedObject = React.memo(function RectElement({ canvas }: IObjectProps) {
   const prevSelectedObjectMap = React.useRef<Record<string, fabric.Object>>({});
   const timerRef = React.useRef<ReturnType<typeof setTimeout>>();
-  const { selectedObjects } = useFabricStore(
-    (state) => ({
-      selectedObjects: state.selectedObjects,
-    }),
-    shallow,
-  );
+  const { selectedObjects } = useSelector((state) => ({
+    selectedObjects: state.ffabric.present.selectedObjects,
+  }));
 
   const diff = selectedObjects.some((object) => {
     const prevObject = prevSelectedObjectMap.current[object.name!];

@@ -3,7 +3,7 @@ import { IconButton, Box, Flex, Button, useDisclosure } from '@chakra-ui/react';
 import { BiUndo, BiRedo } from 'react-icons/bi';
 import { ResizeButton } from './ResizeButton';
 import { ExportButton } from './ExportButton';
-import { useDispatch, useSelector, actions } from '@/stores';
+import { useDispatch, useSelector } from '@/stores';
 import { ActionCreators } from 'redux-undo';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 export function Header({ title }: Props) {
   const store = useSelector((store) => store);
-  const dispatch = useDispatch();
+  const { dispatch, actions } = useDispatch();
   return (
     <Flex
       className="noode-header"
@@ -31,44 +31,16 @@ export function Header({ title }: Props) {
           aria-label=""
           icon={<BiUndo size="34" />}
           onClick={() => {
-            dispatch(actions.age.undo());
+            dispatch(actions.ffabric.undo());
           }}
         />
-        {/* <IconButton aria-label="" icon={<BiRedo size="34" />} onClick={() => redo()} /> */}
-        {store.age.present.age}
-        <Button
+        <IconButton
+          aria-label=""
+          icon={<BiRedo size="34" />}
           onClick={() => {
-            // console.log('dddd', JSON.stringify(store));
-            dispatch(actions.age.addNumber(2));
+            dispatch(actions.ffabric.redo());
           }}
-        >
-          age up
-        </Button>
-        <Button
-          onClick={() => {
-            // console.log('dddd', JSON.stringify(store));
-            dispatch(actions.age.addNumber(-2));
-          }}
-        >
-          age down
-        </Button>
-        {store.level.present.level}
-        <Button
-          onClick={() => {
-            // console.log('dddd', JSON.stringify(store));
-            dispatch(actions.level.addNumber(2));
-          }}
-        >
-          level up
-        </Button>
-        <Button
-          onClick={() => {
-            // console.log('dddd', JSON.stringify(store));
-            dispatch(actions.level.addNumber(-2));
-          }}
-        >
-          level down
-        </Button>
+        />
       </Flex>
 
       <Flex gap="8px">

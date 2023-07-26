@@ -1,18 +1,14 @@
 import React from 'react';
 import { useDelay } from '@/hooks';
 import { fabric } from 'fabric';
-import { shallow, useEditorUiStore, useFabricStore } from '@/stores';
+import { shallow, useDispatch, useEditorUiStore, useFabricStore } from '@/stores';
 import { useTheme } from '@/styles/chakraTheme';
 
 export const useInitializeCanvas = () => {
   const delay500 = useDelay(500);
   const { colors } = useTheme();
-  const { setCanvas } = useFabricStore(
-    (state) => ({
-      setCanvas: state.setCanvas,
-    }),
-    shallow,
-  );
+  const { dispatch, actions } = useDispatch();
+
   const { canvasSize } = useEditorUiStore(
     (state) => ({
       canvasSize: state.canvasSize,
@@ -28,7 +24,8 @@ export const useInitializeCanvas = () => {
         backgroundColor: colors.gray[600],
         renderOnAddRemove: true,
       });
-      setCanvas(_canvas);
+      dispatch(actions.ffabric.setCanvas(_canvas));
+      // setCanvas(_canvas);
 
       fabric.Object.prototype.transparentCorners = true;
       fabric.Object.prototype.cornerColor = 'blue';

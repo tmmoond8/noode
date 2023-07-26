@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex } from '@chakra-ui/react';
-import { shallow, useFabricStore } from '@/stores';
+import { shallow, useFabricStore, useSelector } from '@/stores';
 import { SingleToolbar } from './SingleToolbar';
 
 interface Props {
@@ -8,12 +8,15 @@ interface Props {
 }
 
 export function Toolbar({ title }: Props) {
-  const { selectedObjects } = useFabricStore(
-    (state) => ({
-      selectedObjects: state.selectedObjects,
-    }),
-    shallow,
-  );
+  const { selectedObjects } = useSelector((state) => ({
+    selectedObjects: state.ffabric.present.selectedObjects,
+  }));
+  // const { selectedObjects } = useFabricStore(
+  //   (state) => ({
+  //     selectedObjects: state.selectedObjects,
+  //   }),
+  //   shallow,
+  // );
 
   const isSingle = selectedObjects.length === 1;
   const isEmpty = selectedObjects.length === 0;
